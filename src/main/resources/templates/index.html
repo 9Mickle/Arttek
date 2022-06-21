@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Поиск</title>
+</head>
+<body>
+<div>
+    <label for="ati_id">Введите номер АТИ: </label>
+    <input type="text" id="ati_id">
+    <br></br>
+    <input type="button" value="Поиск"
+           onclick="window.open ('http://localhost:8080/api/v1/firm/info?id=' + document.getElementById ('ati_id').value)">
+
+</div>
+</body>
+</html>

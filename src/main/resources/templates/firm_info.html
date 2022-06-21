@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Паспорт фирмы</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th {
+            background: #dfebb7;
+            text-align: center;
+        }
+
+        td {
+            text-align: center;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 4px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <label for="ati_id">Введите номер АТИ: </label>
+    <input type="text" id="ati_id">
+    <input type="button" value="Поиск"
+           onclick="window.open ('http://localhost:8080/api/v1/firm/info?id=' + document.getElementById ('ati_id').value)">
+    <br>
+    <form method="POST" th:action="@{/api/v1/firm/}">
+        <input type="submit" value="Сохранить данные о фирме">
+    </form>
+
+</div>
+
+<h1>1. Основное</h1>
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>Фирма</th>
+            <th>Код в АТИ</th>
+            <th>ИНН</th>
+            <th>ОГРНИП</th>
+            <th>Профиль</th>
+            <th>Страна</th>
+            <th>Город</th>
+            <th>Адрес</th>
+            <th>Сайт</th>
+            <th>Ссылка на профиль</th>
+            <th>Ссылка на паспорт</th>
+            <th>Язык</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${firm.full_name}"></td>
+            <td th:text="${firm.atiId}"></td>
+            <td th:text="${firm.inn}"></td>
+            <td th:text="${firm.ogrn}"></td>
+            <td th:text="${firm.firm_type + ', ' + firm.verified_trucks + ' - проверенные грузовики'}"></td>
+            <td th:text="${firm.location.country_name + ' ' + firm.position_in_country + ' место'}"></td>
+            <td th:text="${firm.location.short_name + ' ' + firm.position_in_city + ' место'}"></td>
+            <td th:text="${firm.address}"></td>
+            <td th:text="${firm.web_site}"></td>
+            <td>
+                <a target="_blank" th:href="${firm.info_reference}">Профиль</a>
+            </td>
+            <td>
+                <a target="_blank" th:href="${firm.passport_reference}">Паспорт</a>
+            </td>
+            <td th:text="${firm.language}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<h1>2. Контакты</h1>
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>Фирма</th>
+            <th>Код в АТИ</th>
+            <th>Имя</th>
+            <th>Рабочий телефон</th>
+            <th>Моб. телефон</th>
+            <th>Город</th>
+            <th>Рейтинг</th>
+            <th>Кол-во рекомендации</th>
+            <th>Кол-во упоминаний как о плохом партнере</th>
+            <th>fax</th>
+            <th>icq</th>
+            <th>skype</th>
+            <th>email</th>
+            <th>Язык</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="contact : ${contacts}">
+            <td th:text="${firm.full_name}"></td>
+            <td th:text="${firm.atiId}"></td>
+            <td th:text="${contact.name}"></td>
+            <td th:text="${contact.phone}"></td>
+            <td th:text="${contact.mobile_phone}"></td>
+            <td th:text="${contact.city}"></td>
+            <td th:text="${contact.score}"></td>
+            <td th:text="${contact.recommendations_count}"></td>
+            <td th:text="${contact.bad_partner_mentions_count}"></td>
+            <td th:text="${contact.icq}"></td>
+            <td th:text="${contact.fax}"></td>
+            <td th:text="${contact.skype_name}"></td>
+            <td th:text="${contact.email}"></td>
+            <td th:text="${contact.language}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<h1>3. Рейтинг</h1>
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>Рейтинг</th>
+            <th>Кол-во рекомендации</th>
+            <th>Претензии от участников ATI</th>
+            <th>Кол-во упоминаний как о плохом партнере</th>
+            <th>Сумма негативных очков</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${firm.score}"></td>
+            <td th:text="${firm.recommendations_count}"></td>
+            <td th:text="${firm.claims_count}"></td>
+            <td th:text="${firm.bad_partner_mentions_count}"></td>
+            <td th:text="${firm.negative_points_sum}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<h1>4. Активность</h1>
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>Дата регистрации</th>
+            <th>Дата последнего изменения данных</th>
+            <th>Кол-во активных дней за последний месяц</th>
+            <th>Дата удаления</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${firm.registration_date}"></td>
+            <td th:text="${firm.contact_info_changed}"></td>
+            <td th:text="${firm.last_month_active_days}"></td>
+            <td th:text="${firm.deletion_date}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<h1>5. Автопарк</h1>
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>Кол-во подтверждённых грузовиков</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${firm.verified_trucks}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<h1>6. Площадки</h1>
+
+<h1>7. Документы фирмы</h1>
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>Ссылка на документ</th>
+            <th>Описание</th>
+            <th>Дата создания</th>
+            <th>Имя</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="document : ${documents}">
+            <td>
+                <a target="_blank" th:href="${document.link}">Документ</a>
+            </td>
+            <td th:text="${document.description}"></td>
+            <td th:text="${document.creation_date}"></td>
+            <td th:text="${document.name}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
