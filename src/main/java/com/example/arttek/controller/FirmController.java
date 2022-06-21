@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +24,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class FirmController {
     private final FirmService firmService;
-    private static Firm entityFirm;
+    private static Firm transitFirm;
 
     @Operation(summary = "Домашняя страница с поиском фирмы по номеру ATI")
     @GetMapping("/")
@@ -36,7 +35,6 @@ public class FirmController {
     @Operation(summary = "Страница с информацией о фирме")
     @GetMapping("/info")
     public String getFullInfo(Model model, @RequestParam String id) {
-        Contact[] entityContacts;
         final String TOKEN = "88e0d871c901484b99377e3c39744c66";
         String firmSummaryGET = "https://api.ati.su/v1.0/firms/summary/" + id;
         String firmContactGET = String.format("https://api.ati.su/v1.0/firms/%s/contacts/summary", id);
@@ -46,18 +44,17 @@ public class FirmController {
         headers.setBearerAuth(TOKEN);
 
         HttpEntity<String> entity = new HttpEntity<>("auth", headers);
-        ResponseEntity<Firm> firm = template.exchange(firmSummaryGET, HttpMethod.GET, entity, Firm.class);
-        ResponseEntity<Contact[]> contacts = template.exchange(firmContactGET, HttpMethod.GET, entity, Contact[].class);
+        Firm firm = template.exchange(firmSummaryGET, HttpMethod.GET, entity, Firm.class).getBody();
+        Contact[] contacts = template.exchange(firmContactGET, HttpMethod.GET, entity, Contact[].class).getBody();
 
-        entityFirm = firm.getBody();
-        entityContacts = contacts.getBody();
-        if (entityContacts != null) {
-            entityFirm.setContacts(List.of(entityContacts));
+        transitFirm = firm;
+        if (contacts != null && transitFirm != null) {
+            transitFirm.setContacts(List.of(contacts));
         }
 
-        model.addAttribute("firm", firm.getBody());
-        model.addAttribute("contacts", contacts.getBody());
-        model.addAttribute("documents", Objects.requireNonNull(firm.getBody()).getFirm_documents());
+        model.addAttribute("firm", firm);
+        model.addAttribute("contacts", contacts);
+        model.addAttribute("documents", Objects.requireNonNull(firm).getFirm_documents());
 
         return "firm_info";
     }
@@ -65,8 +62,8 @@ public class FirmController {
     @Operation(summary = "Сохранение всех данных о фирме")
     @PostMapping("/")
     public String saveFirm() {
-        if (entityFirm != null) {
-            firmService.save(entityFirm);
+        if (transitFirm != null) {
+            firmService.save(transitFirm);
             return "successful_saving";
         }
         return "unsuccessful_saving";
