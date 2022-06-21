@@ -25,7 +25,7 @@
 </head>
 <body>
 <div>
-    <label for="ati_id">Введите номер АТИ: </label>
+    <label for="ati_id">Введите номер ATI: </label>
     <input type="text" id="ati_id">
     <input type="button" value="Поиск"
            onclick="window.open ('http://localhost:8080/api/v1/firm/info?id=' + document.getElementById ('ati_id').value)">
@@ -61,7 +61,7 @@
             <td th:text="${firm.atiId}"></td>
             <td th:text="${firm.inn}"></td>
             <td th:text="${firm.ogrn}"></td>
-            <td th:text="${firm.firm_type + ', ' + firm.verified_trucks + ' - проверенные грузовики'}"></td>
+            <td th:text="${firm.firm_type + ', ' + firm.verified_trucks + ' - проверенные ТС'}"></td>
             <td th:text="${firm.location.country_name + ' ' + firm.position_in_country + ' место'}"></td>
             <td th:text="${firm.location.short_name + ' ' + firm.position_in_city + ' место'}"></td>
             <td th:text="${firm.address}"></td>
@@ -171,7 +171,7 @@
     <table>
         <thead>
         <tr>
-            <th>Кол-во подтверждённых грузовиков</th>
+            <th>Кол-во подтверждённых ТС</th>
         </tr>
         </thead>
         <tbody>
