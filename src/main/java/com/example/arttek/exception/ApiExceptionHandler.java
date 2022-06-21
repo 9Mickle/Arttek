@@ -13,7 +13,7 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<Object> handleCourseNotFoundException(RuntimeException e) {
-        HttpStatus badRequest = HttpStatus.NOT_FOUND;
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
         ApiException apiException = new ApiException(
                 e.getMessage(),
                 badRequest,
