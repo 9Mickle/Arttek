@@ -13,13 +13,13 @@ services:
     ports:
       - "5433:5432"
 
-  server:
-    image: server
-    container_name: server
-    build: .
-    volumes:
-      - ../src:/opt/app
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
+#  server:
+#    image: server
+#    container_name: server
+#    build: .
+#    volumes:
+#      - ../src:/opt/app
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - postgres
