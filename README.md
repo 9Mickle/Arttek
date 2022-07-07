@@ -1,17 +1,19 @@
 # Arttek
 
 ## How to use:
-* open http://localhost:8080/api/v1/firm/
-* enter the ATI number and click search
-* get acquainted with the information about the firm
-* save the firm or continue the search
+* http://localhost:3000/info
+* search by atiId
 
 ## How to run:
 * Clone this repository.
-* Run commands:
+* Run commands for server:
     * mvn clean install -DskipTests=true
     * docker-compose build
     * docker-compose up
+  
+* Run commands for client:
+    * cd front-react
+    * npm start
 
 ## *APIs:*
 You can view the documentation for all endpoints at this url: http://localhost:8080/swagger-ui/index.html
