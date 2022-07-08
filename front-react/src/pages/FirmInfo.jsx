@@ -48,7 +48,7 @@ function FirmInfo() {
                 window.location.reload();
             } catch (e) {
                 console.log(e)
-                setError("Данная фирма уже сохранена!")
+                setError("Не удалось сохранить фирму!")
                 setSuccessSave(false)
             }
         }

@@ -4,6 +4,7 @@ export default class FirmService {
     static async findByAtiId(atiId) {
         try {
             const response = await axios.get("http://localhost:8080/api/v1/firm/info?atiId=" + atiId)
+            console.log(response.data)
             return response.data
         } catch (e) {
             throw e;

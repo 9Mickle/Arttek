@@ -9,9 +9,13 @@ const SummaryInfo = ({firm, visible}) => {
     }
     return (
         <div>
-            <Card style={{ width: "800px", marginTop: "15px"}}>
+            <Card style={{width: "800px", marginTop: "15px"}}>
                 <Card.Body>
-                    <Card.Title>Основные данные о фирме</Card.Title>
+                    <Card.Title>Основные данные о фирме <span style={{
+                        visibility: firm.deletion_date === null ? "hidden" : "visible",
+                        color: "red",
+                        float: "right"
+                    }}>Удалена</span></Card.Title>
                 </Card.Body>
                 <ListGroup className="list-group-flush">
                     <ListGroupItem>Полное имя фирмы: {firm.full_name}</ListGroupItem>
