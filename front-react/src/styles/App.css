@@ -15,7 +15,18 @@
 }
 
 h1 {
-    margin-top: 15px;
+    text-align: center
+}
+
+.buttonBox {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttonBox-item {
+    width: 100%;
+    margin-right: 8px;
 }
 
 .firm {
